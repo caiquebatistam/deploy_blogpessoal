@@ -68,7 +68,7 @@ No Módulo 03 do Bootcamp (Front End), o Node é ferramenta indispensável para 
 
 2) Faça o download da versão 14 do Node.js e instale no seu computador.
 
-Em caso de dúvidas, acesse o Guia de instalação do Node.js clicando aqui
+Em caso de dúvidas, acesse o Guia de instalação do Node.js <a href="https://github.com/rafaelq80/deploy_blogpessoal/blob/main/ebook/node_install.pdf">clicando aqui</a>
 
 
 
