@@ -346,9 +346,9 @@ Vamos preparar o nosso repositório local para subir a aplicação para o Heroku
 
 5) Digite a sequência de comandos abaixo:
 
-***git init***
-***git add .***
-***git commit -m “Deploy inicial - Blog Pessoal”***
+<br /> ***git init***
+<br /> ***git add .***
+<br /> ***git commit -m “Deploy inicial - Blog Pessoal”***
 
 
 
@@ -437,7 +437,7 @@ Se tudo deu certo, será exibida a mensagem **BUILD SUCESS** (destacado em verde
 
 Uma vez que o Deploy foi feito, assim como no Github, basta efetuar a sequência de comandos abaixo na pasta do projeto:
 
-***git add .***
-***git commit -m “Atualização do Deploy - Blog Pessoal”***
-***git push heroku master***
+<br /> ***git add .***
+<br /> ***git commit -m “Atualização do Deploy - Blog Pessoal”***
+<br /> ***git push heroku master***
 
