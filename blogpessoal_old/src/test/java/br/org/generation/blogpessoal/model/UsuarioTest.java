@@ -1,6 +1,5 @@
 package br.org.generation.blogpessoal.model;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
@@ -50,17 +49,4 @@ public class UsuarioTest {
 		assertTrue(violacao.isEmpty());
 	}
 
-	@Test
-	@DisplayName("❌ Valida Atributos Nulos")
-	void testValidaAtributosNulos() {
-
-		usuarioErro.setUsuario("paulo@email.com.br");
-
-		Set<ConstraintViolation<Usuario>> violacao = validator.validate(usuarioErro);
-		
-		System.out.println(violacao.toString());
-
-		assertFalse(violacao.isEmpty());
-		
-	}
 }

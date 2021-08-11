@@ -4,47 +4,89 @@
 
 Siga as etapas abaixo:
 
-1. <a href="#cfhrk">Criar conta grátis no Heroku</a>
+1. <a href="#swag">Criar a Documentação da API no Swagger</a>
+2. <a href="#user">Criar um usuário padrão em memória</a>
+3. <a href="#local">Testar o seu projeto localmente (http://localhost:8080)</a>
+4. <a href="#cfhrk">Criar conta grátis no Heroku</a>
+5. <a href="#node">Instalar o Node no seu computador</a>
+6. <a href="#hrkcli">Instalar o Heroku Client</a>
+7. <a href="#sprop">Criar o arquivo <code>system.properties</code> no seu projeto</a>
+9. <a href="#pom02">Trocar a dependência do MySQL pela dependência do PostgreSQL no arquivo <code>pom.xml</code> do seu projeto</a>
+11. <a href="#approp">Configurar a conexão com o Banco de Dados no arquivo <code>application.properties</code> do seu projeto</a>
+12. <a href="#git">Preparar o seu projeto para o Deploy com o Git</a>
+13. <a href="#login">Fazer login no Heroku</a>
+14. <a href="#projeto">Criar um novo projeto no Heroku</a>
+15. <a href="#postgre">Adicionar o Banco de dados (PostgreSQL) no Heroku</a>
+16. <a href="#deploy">Efetuar o Deploy</a>
+17. <a href="#testar">Testar o link e a API</a>
 
-2. <a href="#node">Instalar o Node no seu computador</a>
+<a href="#erro">Erros Comuns</a>
 
-3. <a href="#hrkcli">Instalar o Heroku Client</a>
-
-4. <a href="#sprop">Criar o arquivo <code>system.properties</code> no seu projeto</a>
-
-5. <a href="#pom01">Configurar a versão do Java no arquivo <code>pom.xml</code> do seu projeto</a>
-
-6. <a href="#pom02">Trocar a dependência do MySQL pela dependência do PostgreSQL no arquivo <code>pom.xml</code> do seu projeto</a>
-
-7. <a href="#approp">Configurar a conexão com o Banco de Dados no arquivo <code>application.properties</code> do seu projeto</a>
-
-8. <a href="#user">Criar um usuário padrão em memória</a>
-
-9. <a href="#home">Criar uma rota padrão para o Swagger no seu projeto</a>
-
-10. <a href="#git">Preparar o seu projeto para o Deploy com o Git</a>
-
-11. <a href="#login">Fazer login no Heroku</a>
-
-12. <a href="#projeto">Criar um novo projeto no Heroku</a>
-
-13. <a href="#postgre">Adicionar o Banco de dados (PostgreSQL) no Heroku</a>
-
-14. <a href="#deploy">Efetuar o Deploy</a>
-
-15. <a href="#testar">Testar o link e a API</a>
-
-16. <a href="#update">Atualizar o Deploy</a>
-
-    
-
-<h2 id="cfhrk">Criar uma conta grátis no Heroku</h2>
+<a href="#update">Atualizar o Deploy</a>
 
 
 
-O **Heroku é** uma  plataforma na nuvem que permite efetuar o Deploy (em termos práticos, significa colocar no ar uma aplicação que teve seu desenvolvimento concluído) de várias aplicações Back End seja para  hospedagem, testes em produção ou escalar as suas aplicações. 
+<h2 id="swag">#Passo 01 - Criar a Documentação da API</h2>
 
-O grande diferencial do Heroku são as contas gratuitas, que permitem implantar até 5 Aplicações na mesma conta com Banco de Dados PostgreSQL incluso. 
+
+
+Para criar a Documentação da API no Swagger, utilize o ebook do Swagger. (<a href="https://github.com/rafaelq80/deploy_blogpessoal/blob/main/ebook/swagger_documentacao_blog_pessoal.pdf">Clique aqui</a>)
+
+
+
+<h2 id="user">#Passo 02 - Criação do usuário em memória</h2>
+
+
+
+Vamos criar um usuário padrão em memória para simplificar o acesso a nossa API. O usuário em memória é um usuário para testes, que dispensa o cadastro no Banco de Dados. Em produção é altamente recomendado que este usuário seja desabilitado.
+
+Na camada Security, abra o arquivo **BasicSecurityConfig**
+
+Vamos alterar o método **protected void configure(AuthenticationManagerBuilder auth) throws Exception** de:
+
+```java
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService);	
+    }
+```
+
+Para:
+
+```java
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService);
+		
+		auth.inMemoryAuthentication()
+		.withUser("root")
+		.password(passwordEncoder().encode("root"))
+		.authorities("ROLE_USER");
+	
+	}
+```
+
+
+
+<h2 id="local">#Passo 03 - Testar a API no seu computador</h2>
+
+
+
+1. Rode a sua aplicação localmente pelo Eclipse ou pelo STS e verifique se o Swagger abre automaticamente ao inserir o endereço: http://localhost:8080/
+
+2. Caso a API solicite Usuário e senha, experimente o **Usuário: root** e a **Senha: root**, que foram criados em memória.
+
+3. Aproveite para testar todos os endpoints da aplicação no Swagger ou no Postman (/postagens, /temas e /usuarios). 
+
+   
+
+   **IMPORTANTE: Lembre-se que antes de fazer o Deploy é fundamental que a API esteja rodando e sem erros**.
+
+
+
+<h2 id="cfhrk">#Passo 04 - Criar uma conta grátis no Heroku</h2>
+
+
 
 1) Acesse o endereço: **https://www.heroku.com**
 
@@ -54,13 +96,9 @@ O grande diferencial do Heroku são as contas gratuitas, que permitem implantar 
 
 
 
-<h2 id="node">Instalação do Node.js</h2>
+<h2 id="node">#Passo 05 - Instalação do Node.js</h2>
 
 
-
-O Node.js pode ser definido como um **ambiente de execução Javascript \*server-side\***. Isso significa que com o Node.js é possível criar aplicações Javascript para rodar como uma aplicação local em uma máquina, não dependendo de um browser para a execução, como estamos acostumados.
-
-No Módulo 03 do Bootcamp (Front End), o Node é ferramenta indispensável para criar projetos no Angular.
 
 1) Acesse o endereço: **https://nodejs.org/en/**
 
@@ -72,11 +110,9 @@ Em caso de dúvidas, acesse o Guia de instalação do Node.js <a href="https://g
 
 
 
-<h2 id="hrkcli">Instalação do Heroku Client</h2>
+<h2 id="hrkcli">#Passo 06 - Instalação do Heroku Client</h2>
 
 
-
-O Heroku Client é uma Interface de linha de comando (CLI) do Heroku, que facilita a criação e o gerenciamento de seus aplicativos Heroku diretamente do terminal. É uma parte essencial do uso do Heroku. 
 
 Para instalar e executar os comandos do Heroku Client usaremos o Prompt de comando do Windows. 
 
@@ -86,29 +122,34 @@ Para instalar e executar os comandos do Heroku Client usaremos o Prompt de coman
 
 2) Digite o comando **cmd** para abrir o **Prompt de comando do Windows**
 
-3) No Prompt de comando do Windows, se você estiver usando o **STS** digite o comando: ***cd Documents\workspace-spring-tool-suite-4-4.10.0.RELEASE***  (a versão pode ser diferente de 4-4.10.0). Se você estiver utilizando o **Eclipse**, digite o comando ***cd eclipse-workspace***.
+3) Antes de instalar o **Heroku Client**, verifique se o Node já está instalado através do comando: 
 
-4) Antes de instalar o **Heroku Client**, verifique se o Node já está instalado através do comando: ***npm -version*** ou ***npm -v*** (A versão pode ser diferente da imagem)
+***npm -version*** 
 
-<div align="center"><img src="https://i.imgur.com/sfHThTC.png" title="source: imgur.com" /></div>
+<div align="justify"><img src="https://i.imgur.com/sfHThTC.png" title="source: imgur.com" /></div>
 
-5) Para instalar o **Heroku Client** digite o comando: ***npm i -g heroku*** 
+** A versão pode ser diferente da imagem*
+
+4) Para instalar o **Heroku Client** digite o comando: 
+
+***npm i -g heroku*** 
 
 <div align="center"><img src="https://i.imgur.com/rcsDAZ0.png" title="source: imgur.com" /></div>
 
-6) Confirme a instalação do Heroku Client através do comando: ***heroku version*** (A versão pode ser diferente da imagem)
+5) Confirme a instalação do Heroku Client através do comando: 
 
-<div align="center"><img src="https://i.imgur.com/QAtGCn7.png" title="source: imgur.com" /></div>
+***heroku version*** 
 
+<div align="center"><img src="https://i.imgur.com/MO23QyV.png" title="source: imgur.com" /></div>
 
-
-<div align="center"> <h1>*** Importante ***</h1></div>
-
-<div align="justify"><b>Até este ponto fizemos apenas configurações no nosso Sistema Operacional para trabalhar com o Heroku. Agora faremos ajustes no nosso projeto Blog Pessoal para efetuar o Deploy da API. Após realizarmos todas as alterações, o seu projeto não executará mais localmente. Para rodar localmente, será necessário desfazer as configurações dos itens 5 e 6 (arquivo pom.xml), e 7 (arquivo application.properties).</b></div>
+**A versão pode ser diferente da imagem*
 
 
 
-<h2 id="sprop"> Criação do arquivo system.properties</h2>
+
+<h2 id="sprop">#Passo 07 - Criação do arquivo system.properties</h2>
+
+
 
 1) Na raiz do seu projeto (em nosso exemplo, na pasta blogpessoal), crie o arquivo **system.properties**.
 
@@ -123,31 +164,12 @@ Para instalar e executar os comandos do Heroku Client usaremos o Prompt de coman
 4) No arquivo **system.properties** indique a versão do Java que será utilizada pela API no Heroku:
 
 ```properties
-java.runtime.version=15
-```
-
-
-<h2 id="pom01"> Configuração da versão do Java no arquivo pom.xml</h2>
-
-No arquivo, **pom.xml**, vamos alterar as linhas:
-
-```xml
-<properties>
-	<java.version>16</java.version>
-</properties>
-```
-
-Para:
-
-```xml
-<properties>
-	<java.version>15</java.version>
-</properties>
+java.runtime.version=16
 ```
 
 
 
-<h2 id="pom02"> Configuração do PostgreSQL no arquivo pom.xml</h2>
+<h2 id="pom02">#Passo 08 - Configuração do PostgreSQL no arquivo pom.xml</h2>
 
 
 No arquivo, **pom.xml**, vamos alterar as linhas:
@@ -180,7 +202,8 @@ Para:
 
 
 
-<h2 id="approp"> Configuração do Banco de Dados no arquivo application.properties</h2>
+<h2 id="approp">#Passo 09 - Configuração do Banco de Dados no arquivo application.properties</h2>
+
 
 
 No arquivo, **application.properties**, vamos alterar as linhas:
@@ -221,164 +244,124 @@ spring.jackson.date-format=yyyy-MM-dd HH:mm:ss
 spring.jackson.time-zone=Brazil/East
 ```
 
+<i>Observe que a linha 3 do arquivo application.properties está dividida em 2 linhas por questões de impressão. No STS/Eclipse mantenha em uma única linha sem a quebra.</i>
 
+<div align="center"> <h1>*** Importante ***</h1></div>
 
-<h2 id="user">Criação do usuário em memória</h2>
-
-
-
-Vamos criar um usuário padrão em memória para simplificar o acesso a nossa API. O usuário em memória é um usuário para testes, que dispensa o cadastro no Banco de Dados. Em produção é altamente recomendado que este usuário seja desabilitado.
-
-Na camada Security, abra o arquivo **BasicSecurityConfig**
-
-Vamos alterar o método **protected void configure(AuthenticationManagerBuilder auth) throws Exception** de:
-
-```java
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);	
-    }
-```
-
-Para:
-
-```java
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService);
-		
-		auth.inMemoryAuthentication()
-		.withUser("root")
-		.password(passwordEncoder().encode("root"))
-		.authorities("ROLE_USER");
-	
-	}
-```
+<div align="justify">A partir deste ponto, <b>o seu projeto não executará mais localmente (http://localhost:8080/)</b>. Para voltar a executar localmente, será necessário <b>desfazer as configurações efetuadas nos arquivos pom.xml e application.properties</b>.  
+</div>
 
 
 
-<h2 id="home">Criar uma rota padrão para o Swagger</h2>
+
+
+<h2 id="git">#Passo 10 - Deploy com o Git</h2>
 
 
 
-Vamos configurar o **Swagger** como página inicial da nossa API, ou seja, ao digitarmos o endereço principal da nossa API, ao invés de abrir a página abaixo:
+Vamos preparar o nosso repositório local para subir a aplicação para o Heroku utilizando o Git.
 
-<div align="center"><img src="https://i.imgur.com/wE5e4hZ.png" title="source: imgur.com" /></div>
+1- Na pasta do projeto, clique com o botão direito do mouse e na sequência clique na opção: **Show in => System Explorer**
 
-Abriremos a página do Swagger:
+<div align="center"><img src="https://i.imgur.com/ZgiW14F.png" title="source: imgur.com" /></div>
 
-<div align="center"><img src="https://i.imgur.com/RgYPeBg.png" title="source: imgur.com" /></div>
+2- Será aberta a pasta Workspace onde o Eclipse/STS grava os seus projetos: 
 
+-   Se você estiver usando o STS geralmente a pasta fica em: **c:\Usuarios\seu usuario\Documents\workspace-spring-tool-suite-4-4.11.0.RELEASE** (a versão pode ser diferente).    
+-   Se você estiver utilizando o Eclipse,  geralmente a pasta fica em: **c:\Usuarios\seu usuario\eclipse-workspace**.
+    
+    _*seu usuario = Usuário do seu computador_
+    
 
+3- Copie a pasta da API: **_blogpessoal_** (o nome da sua pasta pode ser diferente)
+    
 
-Na camada principal do projeto (**br.org.generation.blogpessoal**) vamos abrir o arquivo **BlogpessoalApplication**
+<div align="left"><img src="https://i.imgur.com/9nYx79c.png" title="source: imgur.com" /></div>
 
-Vamos alterar o arquivo de:
+4- Cole a pasta no mesmo diretório
 
-```java
-package br.org.generation.blogpessoal;
+<div align="left"><img src="https://i.imgur.com/c7bkyZB.png" title="source: imgur.com" /></div>
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+5-  Renomeie a pasta para deploy_blogpessoal
 
-@SpringBootApplication
-public class BlogpessoalApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(BlogpessoalApplication.class, args);
-	}
-
-}
-
-```
-
-Para:
-
-```java
-package br.org.generation.blogpessoal;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-
-@SpringBootApplication
-@RestController
-@RequestMapping("/")
-public class BlogpessoalApplication {
-
-	@GetMapping
-	public ModelAndView swaggerUi() {
-		
-		return new ModelAndView("redirect:/swagger-ui/");
-		
-	}
-	
-	public static void main(String[] args) {
-		SpringApplication.run(BlogpessoalApplication.class, args);
-	}
-
-}
-
-```
-
-As alterações acima transformam a classe principal da nossa API (**BlogpessoalApplication**) em uma classe do tipo **RestController**, que responderá à todas as requisições do tipo **Get** para o **endpoint "/"** (raiz do nosso projeto) e fará o redirecionamento para a página inicial do Swagger, ou seja, o Swagger será a página home do nosso projeto.
+<div align="left"><img width="700px" src="https://i.imgur.com/Ppu5mnF.png" title="source: imgur.com" /></div>
 
 
 
-<h2 id="git">Deploy com o Git</h2>
+6-  Abra esta pasta e verifique se existe uma pasta chamada .git. Caso exista, apague esta pasta. **Esta pasta estará presente <u>APENAS</u> se você inicializou o git dentro dela.**
+​
 
+<div align="left"><img src="https://i.imgur.com/2vzoKD4.png" title="source: imgur.com" /></div>
 
+Caso esta pasta não esteja sendo exibida, na janela do Windows Explorer, clique na **Guia Exibir** e na sequência no botão **Opções**. Na janela **Opções de Pasta**, na **Guia Modo de Exibição**, no item **Configurações avançadas**, localize a opção: **Pastas e arquivos ocultos** e marque a opção **Mostrar arquivos, pastas e unidades ocultas** (como mostra a figura abaixo). Em seguida clique em **OK** para concluir.
 
-Vamos preparar o nosso repositório local para subir a aplicação para o Heroku utilizando o Git. Para realizar estas operações, utilizaremos o **Prompt de Comandos do Windows**.
+<div align="center"><img src="https://i.imgur.com/n8hQu12.png" title="source: imgur.com" /></div>
 
-1) Para abrir o Prompt de Comando, execute o atalho <img width="80" src="https://i.imgur.com/JpqKaVh.png" title="source: imgur.com" /> para abrir a janela Executar
+7- Execute o atalho <img width="80" src="https://i.imgur.com/JpqKaVh.png" title="source: imgur.com" /> para abrir a janela Executar
 
 <div align="center"><img src="https://i.imgur.com/ISBwaaK.png" title="source: imgur.com" /></div>
 
-2) Digite o comando ***cmd***
+8- Digite o comando abaixo para abrir o **Prompt de Comando do Windows**:
 
-3) No Prompt de comando do Windows, se você estiver usando o STS digite o comando: ***cd Documents\workspace-spring-tool-suite-4-4.10.0.RELEASE***  (a versão pode ser diferente de 4-4.10.0). Se você estiver utilizando o Eclipse, digite o comando ***cd eclipse-workspace***.
+```
+cmd
+```
+9- Na pasta do seu projeto, no Windows explorer, copie o caminho da pasta coforme a figura abaixo:
 
-4) Acesse a pasta da API: ***cd blogpessoal*** (o nome da pasta pode ser diferente)
+<div align="center"><img src="https://i.imgur.com/yI6at9T.png" title="source: imgur.com" /></div>
 
-5) Digite a sequência de comandos abaixo:
+10- No Prompt de comando do Windows digite o comando cd e cole na frente do comando o caminho copiado: 
 
-<br /> ***git init***
-<br /> ***git add .***
-<br /> ***git commit -m “Deploy inicial - Blog Pessoal”***
+```
+cd C:\Users\seu usuario\Documents\
+workspace-spring-tool-suite-4-4.11.0.RELEASE\deploy_blogpessoal
+```
+**o nome da pasta pode ser diferente*
+
+11- Digite a sequência de comandos abaixo para inicializar o seu repositório local para efetuar o Deploy no Heroku:
+
+```
+git init
+git add .
+git commit -m “Deploy inicial - Blog Pessoal”
+```
 
 
 
-<h2 id="login">Login no Heroku</h2>
+<h2 id="login">#Passo 11 - Login no Heroku</h2>
 
 
 
-1) Digite o comando: ***heroku login***
+1- Digite o comando: 
 
-<div><img src="https://i.imgur.com/DWeaqfP.png" title="source: imgur.com" /></div>
+```
+heroku login
+```
+<div><img src="https://i.imgur.com/pvygxsZ.png" title="source: imgur.com" /></div>
 
-2) Será aberta a janela abaixo. Clique no botão **Log in**
+2- Será aberta a janela abaixo. Clique no botão **Log in**
 
 <div align="center"><img src="https://i.imgur.com/PXR6hFW.png" title="source: imgur.com" /></div>
 
-3) Após efetuar o login na sua conta, será exibida a janela abaixo. 
+3- Após efetuar o login na sua conta, será exibida a janela abaixo. 
 
 <div align="center"><img src="https://i.imgur.com/i6VMoMp.png" title="source: imgur.com" /></div>
 
-4) Volte para o Prompt de comando para continuar o Deploy.
+4- Volte para o Prompt de comando para continuar o Deploy.
 
-<div align="center"><img src="https://i.imgur.com/2CRuGnz.png" title="source: imgur.com" /></div>
-
-
-
-<h2 id="projeto">Criar um novo projeto no Heroku</h2>
+<div align="center"><img src="https://i.imgur.com/IjyMzrH.png" title="source: imgur.com" /></div>
 
 
 
-Para criar um novo projeto na sua conta do Heroku, digite o comando: ***heroku create nomedoprojeto***
+<h2 id="projeto">#Passo 12 - Criar um novo projeto no Heroku</h2>
+
+
+
+Para criar um novo projeto na sua conta do Heroku, digite o comando:
+
+```
+heroku create nomedoprojeto
+```
 
 <div align="center"> <h1>*** Importante ***</h1></div>
 **O NOME DO PROJETO NÃO PODE TER LETRAS MAIUSCULAS, NUMEROS OU CARACTERES ESPECIAIS. ALÉM DISSO ELE PRECISA SER UNICO DENTRO DA PLATAFORMA HEROKU.**
@@ -389,33 +372,41 @@ Se o nome escolhido já existir, será exibida a mensagem abaixo:
 
 Se o nome escolhido for aceito, será exibida a mensagem abaixo:
 
-<div><img src="https://i.imgur.com/thMnmlP.png" title="source: imgur.com" /></div>
+<div><img src="https://i.imgur.com/P0KazWd.png" title="source: imgur.com" /></div>
 
 
 
-<h2 id="postgre">Adicionar o Banco de dados (PostgreSQL) no Heroku</h2>
+<h2 id="postgre">#Passo 13 - Adicionar o Banco de dados (PostgreSQL) no Heroku</h2>
 
 
 
-Para adicionar um Banco de Dados PostgreSQL no seu projeto, digite o comando: ***heroku addons:create heroku-postgresql:hobby-dev***
+Para adicionar um Banco de Dados PostgreSQL no seu projeto, digite o comando:
 
-<div><img src="https://i.imgur.com/rPIrhXs.png" title="source: imgur.com" /></div>
+```
+heroku addons:create heroku-postgresql:hobby-dev
+```
 
-
-
-<h2 id="deploy">Efetuar o Deploy</h2>
-
-
-
-Para concluir o Deploy, digite o comando: ***git push heroku master***
-
-Se tudo deu certo, será exibida a mensagem **BUILD SUCESS** (destacado em verde na imagem) e será exibido o endereço (**https://nomedoprojeto.heroku.com**) para acessar a API na Internet (destacado em amarelo na imagem)
-
-<div align="center"><img src="https://i.imgur.com/gEUe301.png" title="source: imgur.com" /></div>
+<div><img src="https://i.imgur.com/edhMr8x.png" title="source: imgur.com" /></div>
 
 
 
-<h2 id="testar">Testar o link e a API</h2>
+<h2 id="deploy">#Passo 14 - Efetuar o Deploy</h2>
+
+
+
+Para concluir o Deploy, digite o comando: 
+
+```
+git push heroku master
+```
+
+Se tudo deu certo, será exibida a mensagem **BUILD SUCESS** (destacado em verde na imagem) e será exibido o endereço (**https://nomedoprojeto.herokuapp.com**) para acessar a API na Internet (destacado em amarelo na imagem)
+
+<div align="center"><img src="https://i.imgur.com/JMyNMLx.png" title="source: imgur.com" /></div>
+
+
+
+<h2 id="testar">#Passo 15 - Testar o link e a API</h2>
 
 
 
@@ -431,13 +422,14 @@ Se tudo deu certo, será exibida a mensagem **BUILD SUCESS** (destacado em verde
 
 
 
-<h2 id="update">Atualizar o Deploy</h2>
+<h2 id="update">Atualizar o Deploy no Heroku (Quando houver necessidade)</h2>
 
 
+Uma vez que o Deploy foi feito no Heroku, assim como no Github, basta atualizar os arquivos na pasta **deploy_blogpessoal** e efetuar a sequência de comandos abaixo para subir as atualizações efetuadas no Backend.
 
-Uma vez que o Deploy foi feito, assim como no Github, basta efetuar a sequência de comandos abaixo na pasta do projeto:
-
-<br /> ***git add .***
-<br /> ***git commit -m “Atualização do Deploy - Blog Pessoal”***
-<br /> ***git push heroku master***
+```
+git add .
+git commit -m “Atualização do Deploy - Blog Pessoal”
+git push heroku master
+```
 

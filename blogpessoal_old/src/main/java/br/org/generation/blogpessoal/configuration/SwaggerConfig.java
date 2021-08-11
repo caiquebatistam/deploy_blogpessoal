@@ -30,7 +30,10 @@ public class SwaggerConfig {
 			.build()
 			.apiInfo(metadata())
 			.useDefaultResponseMessages(false)
-			.globalResponses(HttpMethod.GET, responseMessageForGET());
+			.globalResponses(HttpMethod.GET, responseMessage())
+			.globalResponses(HttpMethod.POST, responseMessage())
+			.globalResponses(HttpMethod.PUT, responseMessage())
+			.globalResponses(HttpMethod.DELETE, responseMessage());
 			
 	}
 
@@ -41,7 +44,7 @@ public class SwaggerConfig {
 			.description("Projeto API Spring - Blog Pessoal")
 			.version("1.0.0")
 			.license("Apache License Version 2.0")
-			.licenseUrl("http://localhost:8080/swagger-ui/")
+			.licenseUrl("https://github.com/rafaelq80")
 			.contact(contact())
 			.build();
 	}
@@ -52,7 +55,7 @@ public class SwaggerConfig {
 
 	}
 
-	private static List<Response> responseMessageForGET() {
+	private static List<Response> responseMessage() {
 
 		return new ArrayList<Response>() {
 
@@ -60,7 +63,8 @@ public class SwaggerConfig {
 
 			{
 				add(new ResponseBuilder().code("200").description("Sucesso!").build());
-				add(new ResponseBuilder().code("201").description("Objeto Criado!").build());
+				add(new ResponseBuilder().code("201").description("Criado!").build());
+				add(new ResponseBuilder().code("400").description("Erro na requisição!").build());
 				add(new ResponseBuilder().code("401").description("Não Autorizado!").build());
 				add(new ResponseBuilder().code("403").description("Proibido!").build());
 				add(new ResponseBuilder().code("404").description("Não Encontrado!").build());
