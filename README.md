@@ -20,10 +20,6 @@ Siga as etapas abaixo:
 16. <a href="#deploy">Efetuar o Deploy</a>
 17. <a href="#testar">Testar o link e a API</a>
 
-<a href="#erro">Erros Comuns</a>
-
-<a href="#update">Atualizar o Deploy</a>
-
 
 
 <h2 id="swag">#Passo 01 - Criar a Documentação da API</h2>
@@ -72,11 +68,17 @@ Para:
 
 
 
-1. Rode a sua aplicação localmente pelo Eclipse ou pelo STS e verifique se o Swagger abre automaticamente ao inserir o endereço: http://localhost:8080/
+1.Execute a sua aplicação localmente pelo Eclipse ou pelo STS
 
-2. Caso a API solicite Usuário e senha, experimente o **Usuário: root** e a **Senha: root**, que foram criados em memória.
+2. Abra o endereço: http://localhost:8080/ no seu navegador
 
-3. Aproveite para testar todos os endpoints da aplicação no Swagger ou no Postman (/postagens, /temas e /usuarios). 
+4. Verifique se o Swagger abre automaticamente
+
+6. Caso a API solicite Usuário e senha, experimente o **Usuário: root** e a **Senha: root**, que foram criados em memória.
+
+8. Aproveite para testar todos os Endpoints da aplicação no Swagger ou no Postman (/postagens, /temas e /usuarios). 
+
+10. Antes de continuar pare a execução do Projeto.
 
    
 
