@@ -185,15 +185,7 @@ No arquivo, **pom.xml**, vamos alterar as linhas:
 Para:
 
 ```xml
-<!-- Dependência do MySQL -->
-<!-- <dependency>
-	<groupId>mysql</groupId>
-	<artifactId>mysql-connector-java</artifactId>
-	<scope>runtime</scope>
-</dependency>-->
-
-<!-- Dependência PostgreSQL -->
- <dependency>
+<dependency>
 	<groupId>org.postgresql</groupId>
 	<artifactId>postgresql</artifactId>
 </dependency> 
@@ -225,17 +217,6 @@ spring.jackson.time-zone=Brazil/East
 Para:
 
 ```properties
-#Configuração MySQL
-#spring.jpa.hibernate.ddl-auto=update
-#spring.jpa.database=mysql
-#spring.datasource.url=jdbc:mysql://localhost/db_blogpessoal?createDatabaseIfNotExist=true&serverTimezone=America/Sao_Paulo&useSSl=false
-#spring.datasource.username=root
-#spring.datasource.password=root
-#spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL8Dialect
-
-#spring.jpa.show-sql=true
-
-#Configuração PostgreSQL
 spring.jpa.generate-ddl=true
 spring.datasource.url=${JDBC_DATASOURCE_URL}
 spring.jpa.show-sql=true
@@ -243,8 +224,6 @@ spring.jpa.show-sql=true
 spring.jackson.date-format=yyyy-MM-dd HH:mm:ss
 spring.jackson.time-zone=Brazil/East
 ```
-
-<i>Observe que a linha 3 do arquivo application.properties está dividida em 2 linhas por questões de impressão. No STS/Eclipse mantenha em uma única linha sem a quebra.</i>
 
 <div align="center"> <h1>*** Importante ***</h1></div>
 
