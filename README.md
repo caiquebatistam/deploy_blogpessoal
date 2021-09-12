@@ -6,19 +6,24 @@ Siga as etapas abaixo:
 
 1. <a href="#swag">Criar a Documentação da API no Swagger</a>
 2. <a href="#user">Criar um usuário padrão em memória</a>
-3. <a href="#local">Testar o seu projeto localmente (http://localhost:8080)</a>
-4. <a href="#cfhrk">Criar conta grátis no Heroku</a>
-5. <a href="#node">Instalar o Node no seu computador</a>
-6. <a href="#hrkcli">Instalar o Heroku Client</a>
-7. <a href="#sprop">Criar o arquivo <code>system.properties</code> no seu projeto</a>
+3. <a href="#configure">Atualizar o Método configure(HttpSecurity http)</a>
+4. <a href="#local">Testar o seu projeto localmente (http://localhost:8080)</a>
+5. <a href="#cfhrk">Criar conta grátis no Heroku</a>
+6. <a href="#node">Instalar o Node no seu computador</a>
+7. <a href="#hrkcli">Instalar o Heroku Client</a>
+8. <a href="#sprop">Criar o arquivo <code>system.properties</code> no seu projeto</a>
 9. <a href="#pom02">Trocar a dependência do MySQL pela dependência do PostgreSQL no arquivo <code>pom.xml</code> do seu projeto</a>
-11. <a href="#approp">Configurar a conexão com o Banco de Dados no arquivo <code>application.properties</code> do seu projeto</a>
-12. <a href="#git">Preparar o seu projeto para o Deploy com o Git</a>
-13. <a href="#login">Fazer login no Heroku</a>
-14. <a href="#projeto">Criar um novo projeto no Heroku</a>
-15. <a href="#postgre">Adicionar o Banco de dados (PostgreSQL) no Heroku</a>
-16. <a href="#deploy">Efetuar o Deploy</a>
-17. <a href="#testar">Testar o link e a API</a>
+10. <a href="#approp">Configurar a conexão com o Banco de Dados no arquivo <code>application.properties</code> do seu projeto</a>
+11. <a href="#git">Preparar o seu projeto para o Deploy com o Git</a>
+12. <a href="#login">Fazer login no Heroku</a>
+13. <a href="#projeto">Criar um novo projeto no Heroku</a>
+14. <a href="#postgre">Adicionar o Banco de dados (PostgreSQL) no Heroku</a>
+15. <a href="#deploy">Efetuar o Deploy</a>
+16. <a href="#testar">Testar o link e a API</a>
+
+
+
+<b>Deploy do Blog Pessoal no Heroku para consulta e referência:</b> <i>https://bpangular.herokuapp.com</i>
 
 
 
@@ -43,7 +48,9 @@ Vamos alterar o método **protected void configure(AuthenticationManagerBuilder 
 ```java
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);	
+        
+        auth.userDetailsService(userDetailsService);
+        
     }
 ```
 
@@ -52,7 +59,8 @@ Para:
 ```java
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService);
+		
+        auth.userDetailsService(userDetailsService);
 		
 		auth.inMemoryAuthentication()
 		.withUser("root")
@@ -64,7 +72,53 @@ Para:
 
 
 
-<h2 id="local">#Passo 03 - Testar a API no seu computador</h2>
+<h2 id="configure">#Passo 03 - Atualização do método configure(HttpSecurity  http)</h2>
+
+
+
+Vamos fazer uma atualização no método <b>configure(HttpSecurity  http)</b>, na Classe <b>BasicSecurityConfig</b>, na camada Security, para evitar erros do tipo 401 (Unauthorized) no envio de requisições via frontend no Heroku.
+
+Na camada Security, abra o arquivo **BasicSecurityConfig** e altere o método **protected  void  configure(HttpSecurity  http) throws  Exception** de:
+
+```java
+@Override
+protected  void  configure(HttpSecurity  http) throws  Exception {
+
+http.authorizeRequests()
+	.antMatchers("/usuarios/cadastrar").permitAll()
+	.antMatchers("/usuarios/logar").permitAll()
+	.anyRequest().authenticated()
+	.and().httpBasic()
+	.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+	.and().cors()
+	.and().csrf().disable();
+}
+```
+
+Para:
+
+```java
+@Override
+protected  void  configure(HttpSecurity  http) throws  Exception {
+
+http.authorizeRequests()
+	.antMatchers("/usuarios/cadastrar").permitAll()
+	.antMatchers("/usuarios/logar").permitAll()
+	.antMatchers(HttpMethod.OPTIONS).permitAll()
+	.anyRequest().authenticated()
+	.and().httpBasic()
+    .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+	.and().cors()
+	.and().csrf().disable();
+}
+```
+
+
+O parâmetro **HttpMethod.OPTIONS** permite que o cliente (frontend), possa descobrir quais são as opções de requisição permitidas para um determinado recurso em um servidor. Nesta implementação, está sendo liberada todas as opções das requisições através do método **permitAll()**.
+
+
+
+<h2 id="local">#Passo 04 - Testar a API no seu computador</h2>
 
 
 
@@ -86,7 +140,7 @@ Para:
 
 
 
-<h2 id="cfhrk">#Passo 04 - Criar uma conta grátis no Heroku</h2>
+<h2 id="cfhrk">#Passo 05 - Criar uma conta grátis no Heroku</h2>
 
 
 
@@ -98,7 +152,7 @@ Para:
 
 
 
-<h2 id="node">#Passo 05 - Instalação do Node.js</h2>
+<h2 id="node">#Passo 06 - Instalação do Node.js</h2>
 
 
 
@@ -112,7 +166,7 @@ Em caso de dúvidas, acesse o Guia de instalação do Node.js <a href="https://g
 
 
 
-<h2 id="hrkcli">#Passo 06 - Instalação do Heroku Client</h2>
+<h2 id="hrkcli">#Passo 07 - Instalação do Heroku Client</h2>
 
 
 
@@ -126,7 +180,9 @@ Para instalar e executar os comandos do Heroku Client usaremos o Prompt de coman
 
 3) Antes de instalar o **Heroku Client**, verifique se o Node já está instalado através do comando: 
 
-***npm -version*** 
+```bash
+npm -version
+```
 
 <div align="justify"><img src="https://i.imgur.com/sfHThTC.png" title="source: imgur.com" /></div>
 
@@ -134,13 +190,17 @@ Para instalar e executar os comandos do Heroku Client usaremos o Prompt de coman
 
 4) Para instalar o **Heroku Client** digite o comando: 
 
-***npm i -g heroku*** 
+```bash
+npm i -g heroku
+```
 
 <div align="center"><img src="https://i.imgur.com/rcsDAZ0.png" title="source: imgur.com" /></div>
 
 5) Confirme a instalação do Heroku Client através do comando: 
 
-***heroku version*** 
+```bash
+heroku version
+```
 
 <div align="center"><img src="https://i.imgur.com/MO23QyV.png" title="source: imgur.com" /></div>
 
@@ -148,8 +208,7 @@ Para instalar e executar os comandos do Heroku Client usaremos o Prompt de coman
 
 
 
-
-<h2 id="sprop">#Passo 07 - Criação do arquivo system.properties</h2>
+<h2 id="sprop">#Passo 08 - Criação do arquivo system.properties</h2>
 
 
 
@@ -171,7 +230,7 @@ java.runtime.version=16
 
 
 
-<h2 id="pom02">#Passo 08 - Configuração do PostgreSQL no arquivo pom.xml</h2>
+<h2 id="pom02">#Passo 09 - Configuração do PostgreSQL no arquivo pom.xml</h2>
 
 
 No arquivo, **pom.xml**, vamos alterar as linhas:
@@ -196,7 +255,7 @@ Para:
 
 
 
-<h2 id="approp">#Passo 09 - Configuração do Banco de Dados no arquivo application.properties</h2>
+<h2 id="approp">#Passo 10 - Configuração do Banco de Dados no arquivo application.properties</h2>
 
 
 
@@ -235,14 +294,13 @@ spring.jackson.time-zone=Brazil/East
 
 
 
-
-<h2 id="git">#Passo 10 - Deploy com o Git</h2>
+<h2 id="git">#Passo 11 - Deploy com o Git</h2>
 
 
 
 Vamos preparar o nosso repositório local para subir a aplicação para o Heroku utilizando o Git.
 
-1- Na pasta do projeto, clique com o botão direito do mouse e na sequência clique na opção: **Show in => System Explorer**
+1- Na pasta do projeto, clique com o botão direito do mouse e na sequência clique na opção: **Show in -> System Explorer**
 
 <div align="center"><img src="https://i.imgur.com/ZgiW14F.png" title="source: imgur.com" /></div>
 
@@ -309,7 +367,7 @@ git commit -m “Deploy inicial - Blog Pessoal”
 
 
 
-<h2 id="login">#Passo 11 - Login no Heroku</h2>
+<h2 id="login">#Passo 12 - Login no Heroku</h2>
 
 
 
@@ -334,7 +392,7 @@ heroku login
 
 
 
-<h2 id="projeto">#Passo 12 - Criar um novo projeto no Heroku</h2>
+<h2 id="projeto">#Passo 13 - Criar um novo projeto no Heroku</h2>
 
 
 
@@ -357,21 +415,21 @@ Se o nome escolhido for aceito, será exibida a mensagem abaixo:
 
 
 
-<h2 id="postgre">#Passo 13 - Adicionar o Banco de dados (PostgreSQL) no Heroku</h2>
+<h2 id="postgre">#Passo 14 - Adicionar o Banco de dados (PostgreSQL) no Heroku</h2>
 
 
 
 Para adicionar um Banco de Dados PostgreSQL no seu projeto, digite o comando:
 
-```
-heroku addons:create heroku-postgresql:hobby-dev
+```bash
+heroku addons:create heroku-postgresql:hobby-dev -a nomedoprojeto
 ```
 
 <div><img src="https://i.imgur.com/edhMr8x.png" title="source: imgur.com" /></div>
 
 
 
-<h2 id="deploy">#Passo 14 - Efetuar o Deploy</h2>
+<h2 id="deploy">#Passo 15 - Efetuar o Deploy</h2>
 
 
 
@@ -387,7 +445,7 @@ Se tudo deu certo, será exibida a mensagem **BUILD SUCESS** (destacado em verde
 
 
 
-<h2 id="testar">#Passo 15 - Testar o link e a API</h2>
+<h2 id="testar">#Passo 16 - Testar o link e a API</h2>
 
 
 
@@ -397,16 +455,17 @@ Se tudo deu certo, será exibida a mensagem **BUILD SUCESS** (destacado em verde
 
 3) Sua API abrirá o Swagger. 
 
-<div align="center"><img src="https://i.imgur.com/VYkEvqP.png" title="source: imgur.com" /></div>
+<div align="center"><img src="https://i.imgur.com/WWG2GJw.png" title="source: imgur.com" /></div>
 
 4) Faça alguns testes via Swagger para certificar-se de que tudo está funcionando
 
 
 
-<h2 id="update">Atualizar o Deploy no Heroku (Quando houver necessidade)</h2>
+<h2 id="update">Atualizar o Deploy no Heroku </h2>
 
 
-Uma vez que o Deploy foi feito no Heroku, assim como no Github, basta atualizar os arquivos na pasta **deploy_blogpessoal** e efetuar a sequência de comandos abaixo para subir as atualizações efetuadas no Backend.
+
+Uma vez que o Deploy foi feito no Heroku, assim como no Github, basta atualizar os arquivos na pasta **deploy_blogpessoal** e efetuar a sequência de comandos abaixo para atualizar o Deploy.
 
 ```
 git add .
@@ -414,3 +473,30 @@ git commit -m “Atualização do Deploy - Blog Pessoal”
 git push heroku master
 ```
 
+Caso ocorra algum erro de vinculação (link), verifique se a pasta está vinculada ao Heroku utilizando o comando abaixo:
+
+```
+git remote
+```
+
+Caso não apareça o resultado heroku, utilize o comando abaixo para vincular a pasta com o heroku.
+
+```
+heroku git:remote -a project
+```
+Caso o comando acima falhe, inicialize o repositório git e refaça a vinculação.
+```
+git init
+heroku git:remote -a project
+```
+Para atualizar o Deploy, utilize os comandos baixo:
+```
+git add .
+git commit -m “Atualização do Deploy - Blog Pessoal”
+git push heroku master
+```
+Caso o ultimo comando falhe, acrescente a opção -f para forçar o Deploy.
+```
+git push -f heroku master
+```
+Se todas as opções acima falharem, verifique se o erro não está na aplicação.
