@@ -23,6 +23,8 @@ Siga as etapas abaixo:
 
 
 
+<b>Ebook - Deploy do Blog Pessoal no Heroku para download:</b> <i><a href="https://github.com/rafaelq80/deploy_blogpessoal/blob/main/ebook/heroku_deploy_blog_pessoal.pdf" target="_blank">Clique aqui</a></i>
+
 <b>Deploy do Blog Pessoal no Heroku para consulta e referência:</b> <i>https://bpangular.herokuapp.com</i>
 
 
