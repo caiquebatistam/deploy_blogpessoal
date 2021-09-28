@@ -23,17 +23,11 @@ Siga as etapas abaixo:
 
 
 
-<b>Ebook - Deploy do Blog Pessoal no Heroku para download:</b> <i><a href="https://github.com/rafaelq80/deploy_blogpessoal/blob/main/ebook/heroku_deploy_blog_pessoal.pdf" target="_blank">Clique aqui</a></i>
-
-<b>Deploy do Blog Pessoal no Heroku para consulta e referência:</b> <i>https://bpangular.herokuapp.com</i>
-
-
-
 <h2 id="swag">#Passo 01 - Criar a Documentação da API</h2>
 
 
 
-Para criar a Documentação da API no Swagger, utilize o ebook do Swagger. (<a href="https://github.com/rafaelq80/deploy_blogpessoal/blob/main/ebook/swagger_documentacao_blog_pessoal.pdf">Clique aqui</a>)
+Para criar a Documentação da API no Swagger, utilize o ebook do Swagger.
 
 
 
@@ -164,7 +158,7 @@ O parâmetro **HttpMethod.OPTIONS** permite que o cliente (frontend), possa desc
 
 2) Faça o download da versão 14 do Node.js e instale no seu computador.
 
-Em caso de dúvidas, acesse o Guia de instalação do Node.js <a href="https://github.com/rafaelq80/deploy_blogpessoal/blob/main/ebook/node_install.pdf">clicando aqui</a>
+Em caso de dúvidas, acesse o Guia de instalação do Node.js.
 
 
 
