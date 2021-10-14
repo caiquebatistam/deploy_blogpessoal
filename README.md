@@ -12,7 +12,7 @@ Siga as etapas abaixo:
 6. <a href="#node">Instalar o Node no seu computador</a>
 7. <a href="#hrkcli">Instalar o Heroku Client</a>
 8. <a href="#sprop">Criar o arquivo <code>system.properties</code> no seu projeto</a>
-9. <a href="#pom02">Trocar a dependência do MySQL pela dependência do PostgreSQL no arquivo <code>pom.xml</code> do seu projeto</a>
+9. <a href="#pom02">Adicionar dependência do PostgreSQL no arquivo <code>pom.xml</code> do seu projeto</a>
 10. <a href="#approp">Configurar a conexão com o Banco de Dados no arquivo <code>application.properties</code> do seu projeto</a>
 11. <a href="#git">Preparar o seu projeto para o Deploy com o Git</a>
 12. <a href="#login">Fazer login no Heroku</a>
@@ -229,17 +229,8 @@ java.runtime.version=16
 <h2 id="pom02">#Passo 09 - Configuração do PostgreSQL no arquivo pom.xml</h2>
 
 
-No arquivo, **pom.xml**, vamos alterar as linhas:
+No arquivo, **pom.xml**, vamos adicionar as linhas abaixo: com a dependência do PostgreSQL:
 
-```xml
-<dependency>
-	<groupId>mysql</groupId>
-	<artifactId>mysql-connector-java</artifactId>
-	<scope>runtime</scope>
-</dependency>
-```
-
-Para:
 
 ```xml
 <dependency>
